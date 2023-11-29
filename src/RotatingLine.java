@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+// Класс, который создает и отображает окно
 public class RotatingLine extends JFrame {
 
     public RotatingLine() {
@@ -25,6 +26,8 @@ public class RotatingLine extends JFrame {
     }
 }
 
+// Панель, на которой отображается вращающаяся линия 
+// Панель содержит линию и таймер, который каждые 10 миллисекунд обновляет угол вращения линии и перерисовывает панель
 class LinePanel extends JPanel {
 
     private Line line;
@@ -36,7 +39,8 @@ class LinePanel extends JPanel {
 
         timer = new Timer(10, new ActionListener() {
             int angle = 0;
-
+            // Таймер каждые 10 миллисекунд вызывает метод actionPerformed, 
+            // который увеличивает угол вращения линии на 1 градус и вызывает метод repaint для перерисовки панели
             public void actionPerformed(ActionEvent e) {
                 angle = (angle + 1) % 360;
                 line.setAngle(angle);
@@ -45,7 +49,7 @@ class LinePanel extends JPanel {
         });
         timer.start();
     }
-
+    // В методе paintComponent панели вызывается метод draw линии для ее отображения
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -53,6 +57,7 @@ class LinePanel extends JPanel {
     }
 }
 
+// Класс, который представляет линию и содержит методы для изменения угла вращения линии и ее отображения
 class Line {
 
     private int x1, y1, x2, y2;
@@ -69,6 +74,7 @@ class Line {
         this.angle = angle;
     }
 
+    // В методе draw линии вычисляются новые координаты концов линии, используя текущий угол вращения и длину линии
     public void draw(Graphics g) {
         int x = (x1 + x2) / 2;
         int y = (y1 + y2) / 2;
@@ -81,9 +87,10 @@ class Line {
         int ny1 = (int) (y + len * Math.cos(rad));
         int ny2 = (int) (y - len * Math.cos(rad));
         g.setColor(getColor());
-        g.drawLine(nx1, ny1, nx2, ny2);
+        g.drawLine(nx1, ny1, nx2, ny2); // Линия отображается на панели с помощью метода drawLine
     }
 
+    // Цвет линии вычисляется на основе текущего угла вращения с помощью метода getColor
     private Color getColor() {
         int hue = (int) (angle / 360f * 255f);
         return Color.getHSBColor((float) hue / 255f, 1f, 1f);
